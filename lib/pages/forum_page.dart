@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/api/forum_api.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
+import 'package:sciencenotes/domain/messageMongo.dart';
 import 'package:sciencenotes/domain/messages.dart';
 import 'package:sciencenotes/widgets/forum_space.dart';
 import 'package:sciencenotes/data/messages_dao.dart';
@@ -13,6 +15,7 @@ class ForumPage extends StatefulWidget {
 
 class _ForumPageState extends State<ForumPage> {
   TextEditingController msgController = TextEditingController();
+  //Future<List<MessagesMongo>> list = ForumApi().listMessages();
   Future<List<Messages>> list = MessageDao().listMessages();
 
   final _formKey = GlobalKey<FormState>();
@@ -82,18 +85,31 @@ class _ForumPageState extends State<ForumPage> {
   void onPressedButton() async {
     String msg = msgController.text;
 
-    Messages message = Messages(message: msg);
-    await MessageDao().saveMessage(message: message);
-    // clearText(msg);
+    Future<bool> _ = ForumApi().sendMessage(msg);
+
     setState(() {
+     // list = ForumApi().listMessages();
       list = MessageDao().listMessages();
     });
-
   }
 
-  // void clearText(parameter){
-  //   parameter.clear();
-  // }
+
+  /*buildListView() {
+    return FutureBuilder<List<MessagesMongo>>(
+        future: list,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<MessagesMongo> list = snapshot.data ?? [];
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListMessages(msg: list[index]);
+              },
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
+  }*/
 
   buildListView() {
     return FutureBuilder<List<Messages>>(

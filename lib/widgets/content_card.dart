@@ -22,7 +22,7 @@ class _ContentCardState extends State<ContentCard> {
   Widget build(BuildContext context) {
     return InkWell(
       child: Card(
-        color: widget.content.colorContent,
+        color: Color(widget.content.colorContent),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -79,7 +79,7 @@ class _ContentCardState extends State<ContentCard> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: widget.content.colorButton),
+                            primary: Color(widget.content.colorButton)),
                         onPressed: onPressedButton,
                         child: const Text(
                           'Ver mais',

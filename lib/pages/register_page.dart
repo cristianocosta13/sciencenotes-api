@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/api/exclusivity_api.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
 import '../api/register_api.dart';
 
@@ -200,11 +201,18 @@ class _RegisterPageState extends State<RegisterPage> {
       String data = nascimentController.text;
       String name = nameController.text;
 
-      Future<bool> _ = RegisterApi().registerUser(0, email, name, "https", user, data,
-          password);
-      showSnackBar('Usuário foi salvo com sucesso!');
-      Navigator.pop(context);
-     }
+      Future<bool> isSingleEmail = ExclusivityUserApi().singleEmail(email);
+      Future<bool> isSingleUser = ExclusivityUserApi().singleUser(user);
+
+      if(await isSingleEmail && await isSingleUser){
+        Future<bool> _ = RegisterApi().registerUser(0, email, name, "https", user, data,
+            password);
+        showSnackBar('Usuário foi salvo com sucesso!');
+        Navigator.pop(context);
+      }else{
+        showSnackBar('Email e/ou nome de usuário já utilizado!');
+      }
+    }
   }
 
   showSnackBar(String msg) {

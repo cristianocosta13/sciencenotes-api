@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
+import 'package:sciencenotes/domain/favorites.dart';
+import 'package:sciencenotes/data/favorites_dao.dart';
 import 'package:sciencenotes/domain/content.dart';
 import 'package:sciencenotes/pages/subject_page.dart';
 
@@ -17,11 +19,10 @@ class ContentCard extends StatefulWidget {
 
 class _ContentCardState extends State<ContentCard> {
   @override
-
   Widget build(BuildContext context) {
     return InkWell(
       child: Card(
-        color:  Color(widget.content.colorContent),
+        color: widget.content.colorContent,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -30,14 +31,23 @@ class _ContentCardState extends State<ContentCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.content.title,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.black,
-                    fontFamily: 'Abel-Regular'
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.content.title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontFamily: 'Abel-Regular'),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.favorite),
+                    onPressed: onPressedButtonFavorites,
+                    color: Colors.red,
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Row(
@@ -64,17 +74,19 @@ class _ContentCardState extends State<ContentCard> {
                         height: 200,
                         child: Image.asset(widget.content.image),
                       ),
-                      const SizedBox(height: 8.0,),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Color(widget.content.colorButton)),
+                        style: ElevatedButton.styleFrom(
+                            primary: widget.content.colorButton),
                         onPressed: onPressedButton,
                         child: const Text(
                           'Ver mais',
                           style: TextStyle(
                               fontSize: 16,
                               color: CustomColors.white,
-                              fontFamily: 'AmaticSC-Regular'
-                          ),
+                              fontFamily: 'AmaticSC-Regular'),
                         ),
                       ),
                     ],
@@ -87,6 +99,7 @@ class _ContentCardState extends State<ContentCard> {
       ),
     );
   }
+
   void onPressedButton() {
     Navigator.push(
       context,
@@ -96,6 +109,13 @@ class _ContentCardState extends State<ContentCard> {
         },
       ),
     );
+  }
 
+  void onPressedButtonFavorites() {
+    String name_content = widget.content.title;
+    Favorites fav = Favorites(nameDiscipline: name_content, idContent: 12);
+    FavoritesDAO().addFavorites(
+      favorites: fav,
+    );
   }
 }

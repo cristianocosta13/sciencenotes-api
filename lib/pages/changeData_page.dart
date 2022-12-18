@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/api/changeData_api.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
 //import 'package:sciencenotes/pages/register_page.dart';
 //import 'package:sciencenotes/pages/enter_page.dart';
@@ -13,10 +14,10 @@ class ChangeDataPage extends StatefulWidget{
 }
 
 class _ChangeDataPage extends State<ChangeDataPage>{
-
-  TextEditingController userController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
+  TextEditingController userController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -63,6 +64,25 @@ class _ChangeDataPage extends State<ChangeDataPage>{
                           ),
                           const SizedBox(height: 42),
                           TextFormField(
+                            controller: emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo email obrigatório';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              icon: Icon(Icons.alternate_email, color: CustomColors.appeButtonColor),
+                              labelText: 'Email',
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: CustomColors.appeButtonColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
                             controller: nameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -101,16 +121,16 @@ class _ChangeDataPage extends State<ChangeDataPage>{
                           ),
                           const SizedBox(height: 32),
                           TextFormField(
-                            controller: emailController,
+                            controller: imageController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Campo email obrigatório';
+                                return 'Campo image obrigatório';
                               }
                               return null;
                             },
                             decoration: const InputDecoration(
-                              icon: Icon(Icons.email_outlined, color: CustomColors.appeButtonColor),
-                              labelText: 'Email',
+                              icon: Icon(Icons.photo_camera, color: CustomColors.appeButtonColor),
+                              labelText: 'Image',
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: CustomColors.appeButtonColor,
@@ -120,7 +140,7 @@ class _ChangeDataPage extends State<ChangeDataPage>{
                           ),
                           const SizedBox(height: 40),
                           TextFormField(
-                            controller: ageController,
+                            controller: birthDateController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Campo idade obrigatório';
@@ -164,8 +184,17 @@ class _ChangeDataPage extends State<ChangeDataPage>{
       );
   }
 
-  void onPressedButton() {
+  void onPressedButton() async{
     if (_formKey.currentState!.validate()) {
+      String email = emailController.text;
+      String user = userController.text;
+      String name = nameController.text;
+      String data = birthDateController.text;
+      String image = imageController.text;
+
+      Future<bool> _ = UpdateApi().updateUser(email, name, image, user, data);
+      showSnackBar('Atualização efetuada com sucesso!');
+
       Navigator.pop(
         context,
         MaterialPageRoute(
@@ -176,4 +205,17 @@ class _ChangeDataPage extends State<ChangeDataPage>{
       );
     }
   }
+
+  showSnackBar(String msg) {
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.symmetric(
+        vertical: 80,
+        horizontal: 32,
+      ),
+      content: Text(msg),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 }

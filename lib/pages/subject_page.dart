@@ -1,4 +1,5 @@
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
+import 'package:sciencenotes/pages/changeData_page.dart';
 import 'package:sciencenotes/pages/home_page.dart';
 import 'package:sciencenotes/pages/listPeople_page.dart';
 import 'package:sciencenotes/pages/resume_page.dart';
@@ -53,7 +54,12 @@ class _SubjectPageState extends State<SubjectPage> {
                 onTap: onPressedButtonHome,
               ),
               ListTile(
-                leading: Icon(Icons.person_rounded),
+                leading: Icon(Icons.person_outline_outlined),
+                title: Text("Change Data"),
+                onTap: onPressedButtonChangeData,
+              ),
+              ListTile(
+                leading: Icon(Icons.people_alt_outlined),
                 title: Text("Profiles"),
                 onTap: onPressedButtonProfiles,
               ),
@@ -169,6 +175,16 @@ class _SubjectPageState extends State<SubjectPage> {
       MaterialPageRoute(
         builder: (context) {
           return const ForumPage();
+        },
+      ),
+    );
+  }
+  void onPressedButtonChangeData() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const ChangeDataPage();
         },
       ),
     );

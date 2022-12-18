@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sciencenotes/api/changeData_api.dart';
+import 'package:sciencenotes/api/exclusivity_api.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
 //import 'package:sciencenotes/pages/register_page.dart';
 //import 'package:sciencenotes/pages/enter_page.dart';
@@ -192,17 +193,22 @@ class _ChangeDataPage extends State<ChangeDataPage>{
       String data = birthDateController.text;
       String image = imageController.text;
 
-      Future<bool> _ = UpdateApi().updateUser(email, name, image, user, data);
-      showSnackBar('Atualização efetuada com sucesso!');
+      Future<bool> isSingleUser = ExclusivityUserApi().singleUser(user);
 
-      Navigator.pop(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return const ProfilePage();
-          },
-        ),
-      );
+      if(await isSingleUser){
+        Future<bool> _ = UpdateApi().updateUser(email, name, image, user, data);
+        showSnackBar('Atualização efetuada com sucesso!');
+        Navigator.pop(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const ProfilePage();
+            },
+          ),
+        );
+      }else{
+        showSnackBar('Nome de usuário já utilizado!');
+      }
     }
   }
 

@@ -7,7 +7,7 @@ class Helper{
 
   initDB() async {
     String databasePath = await getDatabasesPath();
-    String path = join(databasePath, "science_notes8.db");
+    String path = join(databasePath, "science_notes10.db");
     Database database = await openDatabase(
     path,
     version: 1,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sciencenotes/data/DBusers.dart';
 import 'package:sciencenotes/api/user_api.dart';
 import 'package:sciencenotes/domain/users.dart';
 import 'package:sciencenotes/widgets/list_profile.dart';

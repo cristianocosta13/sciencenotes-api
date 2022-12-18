@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/domain/messageMongo.dart';
 import 'package:sciencenotes/domain/messages.dart';
 
 class ListMessages extends StatefulWidget {
+  //final MessagesMongo msg;
   final Messages msg;
+
   const ListMessages({
     Key? key,
     required this.msg,

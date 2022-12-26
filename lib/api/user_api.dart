@@ -4,22 +4,32 @@ import 'package:sciencenotes/domain/users.dart';
 import 'package:http/http.dart';
 
 class UserApi {
-  String baseUrl = "";
+  final String _baseUrl = "science-notes.joscristiano.repl.co";
 
   Future<List<Users>> listUsers() async {
-    Uri url = Uri.http(baseUrl, "/api/findAll");
+    Uri url = Uri.http(_baseUrl, "/findAll");
     Response response = await http.get(url);
 
-    List<Users> lista = <Users>[];
-    if (response.statusCode == 200) {
-      var result = jsonDecode(response.body);
+    print(response.statusCode);
+    print(response.body);
 
-      for (var json in result) {
-        Users user = Users.fromApiJson(json);
-        lista.add(user);
-      }
+    var json = jsonDecode(response.body);
+    
+    List<Users> list = <Users>[];
+    for (var userDTO in json['users']) {
+      print(userDTO);
+      Users user = Users(
+          image: userDTO['image'],
+          email: userDTO['email'],
+          password: userDTO['password'],
+          name: userDTO['name'],
+          username: userDTO['username'],
+          birthdate: userDTO['birthdate'],
+          id: 0,
+      );
+      list.add(user);
     }
 
-    return lista;
+    return list;
   }
 }

@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/api/mission_api.dart';
 import 'package:sciencenotes/assets/colors/custom_colors.dart';
+import 'package:sciencenotes/domain/mission.dart';
+import 'package:sciencenotes/pages/addMission_page.dart';
 import 'package:sciencenotes/widgets/missions_card.dart';
 
 class listMissionsPage extends StatefulWidget {
@@ -10,6 +14,7 @@ class listMissionsPage extends StatefulWidget {
 }
 
 class _listMissionsPageState extends State<listMissionsPage> {
+  Future<List<Mission>> list = MissionApi().listMissions();
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +32,37 @@ class _listMissionsPageState extends State<listMissionsPage> {
         padding: const EdgeInsets.all(16.0),
         child: buildListView(),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddMission();
+              },
+            ),
+          );
+        },
+        child: const Icon(CupertinoIcons.add),
+        backgroundColor: CustomColors.appeButtonColor,
+      ),
     );
   }
 
-  buildListView(){
-    return ListView(
-      children: [
-        Mission(title: "Constância", description: "Estude 3 horas todos os dias ao longo da semana.", icon: Icons.access_time),
-        Mission(title: "Pratique", description: "Faça 20 questões por dia.", icon: Icons.assignment_rounded),
-        Mission(title: "Flashcards", description: "Faça flashcards dos assuntos que está estudando.", icon: Icons.drive_file_move_outline),
-        Mission(title: "Planner", description: "Organize suas tarefas diárias.", icon: Icons.calendar_month),
-        Mission(title: "Simulados", description: "Faça simulados interdiscuplinares com frequência e treine tudo o que aprendeu.", icon: Icons.text_increase_sharp),
-      ],
-    );
+  buildListView() {
+    return FutureBuilder<List<Mission>>(
+        future: list,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Mission> list = snapshot.data ?? [];
+            return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return MissionWidget(mission: list[index]);
+              },
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 }

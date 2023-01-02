@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:sciencenotes/domain/mission.dart';
 
 
-class Mission extends StatefulWidget {
-  final String title;
-  final String description;
-  final IconData icon;
+class MissionWidget extends StatefulWidget {
+  final Mission mission;
 
-  const Mission({
+  const MissionWidget({
     Key? key,
-    required this.title,
-    required this.description,
-    required this.icon,
+    required this.mission,
   }) : super(key: key);
 
   @override
-  State<Mission> createState() => _MissionCardState();
+  State<MissionWidget> createState() => _MissionCardState();
 }
 
-
-
-class _MissionCardState extends State<Mission> {
+class _MissionCardState extends State<MissionWidget> {
   @override
 
   Widget build(BuildContext context){
     return InkWell(
       child: Card(
-          color: Color.fromARGB(255, 248, 214, 128),
+          color: const Color.fromARGB(255, 248, 214, 128),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -37,10 +32,10 @@ class _MissionCardState extends State<Mission> {
                 const SizedBox(height: 24),
                 Row(
                   children: [
-                    Icon(widget.icon),
+                    //Icon(widget.icon),
                     const SizedBox(width: 12),
-                    Text(widget.title,
-                      style: TextStyle(
+                    Text(widget.mission.name,
+                      style: const TextStyle(
                         fontFamily: 'AmacticSC-Regular',
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -49,8 +44,8 @@ class _MissionCardState extends State<Mission> {
                   ],
                 ),
                 const SizedBox(height: 18),
-                Text(widget.description,
-                  style: TextStyle(
+                Text(widget.mission.description,
+                  style: const TextStyle(
                     fontFamily: 'Abel-Regular',
                     fontSize: 20,
                   ),

@@ -13,6 +13,7 @@ import 'package:sciencenotes/domain/content.dart';
 import 'package:sciencenotes/pages/about_page.dart';
 import 'package:sciencenotes/pages/missions_page.dart';
 import 'package:sciencenotes/pages/forum_page.dart';
+import 'package:sciencenotes/pages/quotes_page.dart';
 
 import 'favorites.dart';
 import 'flashcards.dart';
@@ -72,6 +73,10 @@ class _SubjectPageState extends State<SubjectPage> {
                   leading: const Icon(Icons.favorite_border),
                   title: Text("Favourites"),
                   onTap: onPressedButtonFavorites),
+              ListTile(
+                  leading: const Icon(Icons.lightbulb),
+                  title: Text("Quotes"),
+                  onTap: onPressedButtonQuotes),
               ListTile(
                   leading: const Icon(Icons.add_card),
                   title: Text("Flashcards"),
@@ -165,6 +170,16 @@ class _SubjectPageState extends State<SubjectPage> {
       MaterialPageRoute(
         builder: (context) {
           return const listMissionsPage();
+        },
+      ),
+    );
+  }
+  void onPressedButtonQuotes() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const QuotesPage();
         },
       ),
     );
